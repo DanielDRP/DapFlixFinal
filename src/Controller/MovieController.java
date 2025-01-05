@@ -1,5 +1,6 @@
 package Controller;
 
+import Data.TMDBApi.TMDBApi;
 import Data.WebScraping.MTenerifeScraper;
 import Data.WebScraping.YelmoScraper;
 import com.google.gson.Gson;
@@ -40,6 +41,11 @@ public class MovieController implements HttpHandler {
                         "https://multicinestenerife.com/cartelera-tenerife/"
                 );
                 response = gson.toJson(mt.getSchedule(""));
+            }
+
+            if (path.equals("/api/movies/netflix")){
+                System.out.println("Buscando peliculas en Netflix "); // BORRAR
+                response = gson.toJson(TMDBApi.fetchMovies("8"));
             }
 
             // Configurar encabezados CORS
