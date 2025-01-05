@@ -204,6 +204,34 @@
 </footer>
 
 <script>
+    // Función para cambiar entre pestañas
+    function activateTab(tabName) {
+        // Desactivar todas las pestañas
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => tab.classList.remove('active'));
+
+        // Desactivar todos los paneles
+        const panels = document.querySelectorAll('.panel');
+        panels.forEach(panel => panel.classList.remove('active'));
+
+        // Activar la pestaña y el panel correspondientes
+        const activeTab = document.querySelector(`.tab[data-tab="${tabName}"]`);
+        const activePanel = document.getElementById(tabName);
+
+        if (activeTab && activePanel) {
+            activeTab.classList.add('active');
+            activePanel.classList.add('active');
+        }
+    }
+
+    // Añadir eventos de clic a las pestañas
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            const tabName = tab.getAttribute('data-tab');
+            activateTab(tabName);
+        });
+    });
+
     // Función para cargar las películas desde la API de Yelmo
     function loadYelmoMovies() {
         fetch('http://localhost:8080/api/movies/yelmo-meridiano')
@@ -257,6 +285,9 @@
     // Event listeners para los botones
     document.getElementById("yelmoBtn").addEventListener("click", loadYelmoMovies);
     document.getElementById("multicinesBtn").addEventListener("click", loadMulticinesMovies);
+
+    // Activar la pestaña inicial (Cine)
+    activateTab('cine');
 </script>
 </body>
 </html>
