@@ -84,4 +84,51 @@ public class TaquillaESP extends BaseScraper {
         return new Movie(firstMovieTitle, "", "");
     }
 
+    public List<Movie> getHistoricalData() {
+        List<Movie> movies = new ArrayList<>();
+        WebDriver driver = createWebDriver(); // Usamos el método de la clase base para crear el WebDriver
+
+        try {
+            driver.get(baseUrl); // Cargamos la página
+
+            // Esperamos hasta que la tabla esté visible
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table/tbody")));
+
+            // Localizamos todas las filas de la tabla
+            List<WebElement> rows = driver.findElements(By.xpath("//table/tbody/tr"));
+
+            for (WebElement row : rows) {
+                try {
+                    // Verificamos que la fila no esté vacía
+                    List<WebElement> cells = row.findElements(By.tagName("td"));
+                    if (cells.size() < 3) {
+                        continue; // Saltamos las filas que no tienen al menos 3 celdas
+                    }
+
+                    // Extraemos el ranking, título y recaudación
+                    String rankingText = cells.get(0).getText().trim();
+                    String titleText = cells.get(1).getText().trim();
+                    String revenueText = cells.get(2).findElement(By.tagName("div")).getText().replace("€", "").replace(",", "").trim();
+
+                    int ranking = Integer.parseInt(rankingText);
+                    String title = titleText;
+                    String revenue = revenueText;
+
+                    // Creamos un objeto Movie y lo añadimos a la lista
+                    Movie movie = new Movie(title, revenue, String.valueOf(ranking));
+                    movies.add(movie);
+                } catch (Exception e) {
+                    System.err.println("Error procesando una fila: " + e.getMessage());
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error al obtener todas las películas: " + e.getMessage());
+        } finally {
+            driver.quit(); // Cerramos el driver después de procesar
+        }
+
+        return movies;
+    }
+
 }

@@ -10,21 +10,6 @@
 <body>
 <header>
     <h1>DAPFLIX</h1>
-    <div class="filter-bar">
-        <select name="region" id="region">
-            <option value="global">Global</option>
-            <option value="region1">Región 1</option>
-            <option value="region2">Región 2</option>
-        </select>
-        <select name="genre" id="genre">
-            <option value="all">Todos los géneros</option>
-            <option value="action">Acción</option>
-            <option value="comedy">Comedia</option>
-            <option value="drama">Drama</option>
-        </select>
-        <input type="date" id="date-start">
-        <input type="date" id="date-end">
-    </div>
 </header>
 
 <main>
@@ -53,11 +38,19 @@
                 <p>Ocupación promedio</p>
             </div>
         </div>
-        <div class="chart-container">
-            <div class="chart">
-                <h3>Recaudación Semanal por Película</h3>
-                <p>[Gráfico de barras]</p>
+
+        <div class="chart-grid">
+            <div class="chart" id="barChartContainer">
+                <h3>Películas por cine</h3>
+                <canvas id="comparativaChart"></canvas>
             </div>
+            <div class="chart" id="pieChartContainer">
+                <h3>Ranking Histórico de Recaudación</h3>
+                <canvas id="historicalPieChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-container">
             <div class="ranking-table">
                 <h3>Ranking de Películas 2025</h3>
                 <table>
@@ -73,10 +66,7 @@
                 </table>
             </div>
         </div>
-        <div class="chart">
-            <h3>Comparativa de Películas en Cartelera</h3>
-            <canvas id="comparativaChart" width="400" height="200"></canvas>
-        </div>
+
 
         <!-- Botón único para cargar las películas -->
         <div>
@@ -84,9 +74,6 @@
         </div>
 
         <!-- Indicador de carga -->
-
-
-        <!-- Sección para mostrar las películas -->
         <div class="movies-section" id="cineMovies">
             <!-- Las películas se cargarán aquí -->
         </div>
@@ -102,6 +89,8 @@
 
         <div>
             <button id="netflixBtn">Ver Películas de Netflix</button>
+            <button id="disneyPlusBtn">Ver Películas de Disney+</button>
+            <button id="maxBtn">Ver Películas de Max</button>
         </div>
 
         <div class="movies-section" id="streamingMovies">
@@ -115,8 +104,18 @@
 </main>
 
 <footer>
-    Datos actualizados al: 14 de diciembre de 2024
+    Datos actualizados el: <span id="currentDate"></span>
 </footer>
+<script>
+    // Obtener la fecha actual
+    const today = new Date();
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const formattedDate = today.toLocaleDateString('es-ES', options);
+
+    // Insertar la fecha en el elemento con id "currentDate"
+    document.getElementById('currentDate').textContent = formattedDate;
+</script>
+
 <script src="script.js"></script>
 </body>
 </html>

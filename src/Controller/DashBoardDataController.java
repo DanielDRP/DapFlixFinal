@@ -36,6 +36,8 @@ public class DashBoardDataController implements HttpHandler {
                 response = gson.toJson(moviesDataApi.getYearRanking());
             } else if (path.equals("/api/dashboard/most-viewed")) {
                 response = gson.toJson(moviesDataApi.getMostViewed());
+            } else if (path.equals("/api/dashboard/historical-ranking")) {
+                response = gson.toJson(moviesDataApi.getHistoricalRanking());
             }else {
                 response = gson.toJson(new Message("Ruta no encontrada"));
                 statusCode = 404;
