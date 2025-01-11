@@ -5,5 +5,6 @@ import Model.Movie;
 import java.util.List;
 
 public interface MovieScraper {
-    List<Movie> getSchedule(String ciudad);
+    List<Movie> getSchedule();
+    int getSize();
 }

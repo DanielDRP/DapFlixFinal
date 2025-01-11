@@ -9,11 +9,11 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-abstract class BaseMovieScraper implements MovieScraper {
+abstract class BaseScraper {
 
     private final String driverPath;
 
-    public BaseMovieScraper(String driverPath) {
+    public BaseScraper(String driverPath) {
         this.driverPath = driverPath;
         System.setProperty("webdriver.chrome.driver", driverPath);
     }

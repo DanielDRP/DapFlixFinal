@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.Objects;
+
 public class Movie {
     private final String title;
     private final String info;
@@ -11,7 +13,7 @@ public class Movie {
         this.image = imagenUrl;
     }
 
-    public String getTitulo() {
+    public String getTitle() {
         return title;
     }
 
@@ -19,8 +21,23 @@ public class Movie {
         return info;
     }
 
-    public String getImagenUrl() {
+    public String getImage() {
         return image;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        // Comparar el título de las películas
+        Movie movie = (Movie) o;
+        return title.equals(movie.getTitle());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title);  // Usar id para el hashCode
     }
 
     @Override

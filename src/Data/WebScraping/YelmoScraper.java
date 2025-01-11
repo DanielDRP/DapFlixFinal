@@ -8,22 +8,24 @@ import org.openqa.selenium.WebElement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class YelmoScraper extends BaseMovieScraper {
+public class YelmoScraper extends BaseScraper implements MovieScraper{
 
     private final String baseUrl;
+    private String city;
 
-    public YelmoScraper(String driverPath, String baseUrl) {
+    public YelmoScraper(String driverPath, String baseUrl, String city) {
         super(driverPath);
+        this.city = city;
         this.baseUrl = baseUrl;
     }
 
     @Override
-    public List<Movie> getSchedule(String ciudad) {
+    public List<Movie> getSchedule() {
         List<Movie> movies = new ArrayList<>();
         WebDriver driver = createWebDriver();
 
         try {
-            driver.get(baseUrl + ciudad);
+            driver.get(baseUrl + city);
 
             waitForElement(driver, By.cssSelector("article.now__movie"));
 
@@ -40,5 +42,10 @@ public class YelmoScraper extends BaseMovieScraper {
         }
 
         return movies;
+    }
+
+    @Override
+    public int getSize() {
+        return 0;
     }
 }

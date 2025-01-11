@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAPFLIX</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <h1>DAPFLIX</h1>
+    <div class="filter-bar">
+        <select name="region" id="region">
+            <option value="global">Global</option>
+            <option value="region1">Región 1</option>
+            <option value="region2">Región 2</option>
+        </select>
+        <select name="genre" id="genre">
+            <option value="all">Todos los géneros</option>
+            <option value="action">Acción</option>
+            <option value="comedy">Comedia</option>
+            <option value="drama">Drama</option>
+        </select>
+        <input type="date" id="date-start">
+        <input type="date" id="date-end">
+    </div>
+</header>
+
+<main>
+    <div class="tab-container">
+        <div class="tab active" data-tab="cine">Cine</div>
+        <div class="tab" data-tab="streaming">Streaming</div>
+        <div class="tab" data-tab="comparativa">Comparativa</div>
+    </div>
+
+    <div class="loading-indicator" id="loadingIndicator">
+        Cargando... <div class="spinner"></div>
+    </div>
+
+    <div id="cine" class="panel active">
+        <div class="kpi-container">
+            <div class="kpi">
+                <h2 id="peliculas-en-cartelera">0</h2>
+                <p>Películas en cartelera</p>
+            </div>
+            <div id="mas-vista"class="kpi">
+                <h2>Avatar 2</h2>
+                <p>Más vista esta semana</p>
+            </div>
+            <div class="kpi">
+                <h2>85%</h2>
+                <p>Ocupación promedio</p>
+            </div>
+        </div>
+        <div class="chart-container">
+            <div class="chart">
+                <h3>Recaudación Semanal por Película</h3>
+                <p>[Gráfico de barras]</p>
+            </div>
+            <div class="ranking-table">
+                <h3>Ranking de Películas 2025</h3>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Posición</th>
+                        <th>Película</th>
+                        <th>Recaudación</th>
+                    </tr>
+                    </thead>
+                    <tbody id="rankingTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="chart">
+            <h3>Comparativa de Películas en Cartelera</h3>
+            <canvas id="comparativaChart" width="400" height="200"></canvas>
+        </div>
+
+        <!-- Botón único para cargar las películas -->
+        <div>
+            <button id="loadMoviesBtn">Cargar Películas</button>
+        </div>
+
+        <!-- Indicador de carga -->
+
+
+        <!-- Sección para mostrar las películas -->
+        <div class="movies-section" id="cineMovies">
+            <!-- Las películas se cargarán aquí -->
+        </div>
+    </div>
+
+    <div id="streaming" class="panel">
+        <div class="kpi-container">
+            <div class="kpi">
+                <h2 id="peliculas-streaming">0</h2>
+                <p>Películas disponibles en Streaming</p>
+            </div>
+        </div>
+
+        <div>
+            <button id="netflixBtn">Ver Películas de Netflix</button>
+        </div>
+
+        <div class="movies-section" id="streamingMovies">
+            <!-- Las películas se cargarán aquí -->
+        </div>
+    </div>
+
+    <div id="comparativa" class="panel">
+        <!-- Panel Comparativa sin cambios -->
+    </div>
+</main>
+
+<footer>
+    Datos actualizados al: 14 de diciembre de 2024
+</footer>
+<script src="script.js"></script>
+</body>
+</html>

@@ -8,7 +8,7 @@ import org.openqa.selenium.WebElement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MTenerifeScraper extends BaseMovieScraper {
+public class MTenerifeScraper extends BaseScraper implements MovieScraper {
 
     private final String baseUrl;
 
@@ -18,12 +18,12 @@ public class MTenerifeScraper extends BaseMovieScraper {
     }
 
     @Override
-    public List<Movie> getSchedule(String ciudad) {
+    public List<Movie> getSchedule() {
         List<Movie> movies = new ArrayList<>();
         WebDriver driver = createWebDriver();
 
         try {
-            driver.get(baseUrl + ciudad);
+            driver.get(baseUrl);
             waitForElement(driver, By.cssSelector("div.elementor-widget-container"));
             WebElement scheduleContainer = driver.findElement(By.cssSelector("div.amy-movie-showtimews-2"));
             List<WebElement> movieRows = scheduleContainer.findElements(By.cssSelector("div.amy-movie-showtimews-row"));
@@ -43,5 +43,10 @@ public class MTenerifeScraper extends BaseMovieScraper {
         }
 
         return movies;
+    }
+
+    @Override
+    public int getSize() {
+        return 0;
     }
 }
