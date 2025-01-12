@@ -9,7 +9,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TaquillaESP extends BaseScraper {
 
@@ -84,19 +86,24 @@ public class TaquillaESP extends BaseScraper {
         return new Movie(firstMovieTitle, "", "");
     }
 
-    public List<Movie> getHistoricalData() {
+    /*public List<Movie> getHistoricalData() {
         List<Movie> movies = new ArrayList<>();
         WebDriver driver = createWebDriver(); // Usamos el método de la clase base para crear el WebDriver
 
         try {
-            driver.get(baseUrl); // Cargamos la página
+            driver.get("https://www.taquillaespana.es/"); // Cargamos la página
 
-            // Esperamos hasta que la tabla esté visible
+            // Esperamos hasta que la tabla específica esté visible
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table/tbody")));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath("//h2[contains(text(), 'MÁS TAQUILLERAS DE LA HISTORIA')]/following-sibling::table/tbody")));
 
-            // Localizamos todas las filas de la tabla
-            List<WebElement> rows = driver.findElements(By.xpath("//table/tbody/tr"));
+            // Localizamos la tabla específica (usamos el encabezado como referencia)
+            WebElement table = driver.findElement(
+                    By.xpath("//h2[contains(text(), 'MÁS TAQUILLERAS DE LA HISTORIA')]/following-sibling::table/tbody"));
+
+            // Localizamos todas las filas de esa tabla
+            List<WebElement> rows = table.findElements(By.tagName("tr"));
 
             for (WebElement row : rows) {
                 try {
@@ -109,26 +116,73 @@ public class TaquillaESP extends BaseScraper {
                     // Extraemos el ranking, título y recaudación
                     String rankingText = cells.get(0).getText().trim();
                     String titleText = cells.get(1).getText().trim();
-                    String revenueText = cells.get(2).findElement(By.tagName("div")).getText().replace("€", "").replace(",", "").trim();
+                    String revenueText = cells.get(2).getText()
+                            .replace("€", "")
+                            .replace(".", "") // Reemplaza puntos para evitar errores en los valores numéricos
+                            .replace(",", ".") // Ajuste por formato europeo (coma como separador decimal)
+                            .trim();
 
+                    // Parseamos los valores extraídos
                     int ranking = Integer.parseInt(rankingText);
-                    String title = titleText;
-                    String revenue = revenueText;
+                    double revenue = Double.parseDouble(revenueText);
 
                     // Creamos un objeto Movie y lo añadimos a la lista
-                    Movie movie = new Movie(title, revenue, String.valueOf(ranking));
+                    Movie movie = new Movie(titleText, String.valueOf(revenue), String.valueOf(ranking));
                     movies.add(movie);
+                } catch (NumberFormatException nfe) {
+                    System.err.println("Error al procesar datos numéricos en la fila: " + row.getText());
                 } catch (Exception e) {
                     System.err.println("Error procesando una fila: " + e.getMessage());
                 }
             }
         } catch (Exception e) {
-            System.err.println("Error al obtener todas las películas: " + e.getMessage());
+            System.err.println("Error al obtener las películas de 'Más taquilleras de la historia': " + e.getMessage());
         } finally {
-            driver.quit(); // Cerramos el driver después de procesar
+            if (driver != null) {
+                driver.quit(); // Cerramos el driver después de procesar
+            }
         }
 
         return movies;
+    }*/
+
+    public List<String[]> getYearRevenueData() {
+        List<String[]> yearlyData = new ArrayList<>();
+        WebDriver driver = createWebDriver(); // Creamos el WebDriver usando el método base
+
+        try {
+            driver.get(baseUrl); // Navegamos a la URL base
+
+            // Esperamos hasta que la tabla específica esté visible
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//tbody")));
+
+            // Localizamos las filas de la tabla en el tbody
+            List<WebElement> rows = driver.findElements(By.xpath("//tbody/tr"));
+
+            for (WebElement row : rows) {
+                List<WebElement> cells = row.findElements(By.tagName("td"));
+
+                if (cells.size() == 2) {
+                    String label = cells.get(0).getText().trim(); // Primera celda
+                    String value = cells.get(1).getText().trim(); // Segunda celda
+
+                    // Añadimos solo las filas que necesitamos
+                    if (label.equals("Recaudación total") || label.equals("Cine español")) {
+                        yearlyData.add(new String[]{label, value});
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error al obtener los datos anuales específicos: " + e.getMessage());
+        } finally {
+            if (driver != null) {
+                driver.quit(); // Cerramos el WebDriver
+            }
+        }
+
+        return yearlyData;
     }
+
 
 }

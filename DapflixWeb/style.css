@@ -82,6 +82,12 @@ main {
    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
    margin-bottom: 20px;
 }
+.chart {
+   width: 100%;
+   max-width: 600px;
+   margin: 0 auto;
+}
+
 
 .chart-container {
    display: flex;

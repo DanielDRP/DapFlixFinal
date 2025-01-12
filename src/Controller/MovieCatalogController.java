@@ -38,13 +38,7 @@ public class MovieCatalogController implements HttpHandler {
             } else if (path.equals("/api/movies/netflix")) {
                 System.out.println("Buscando películas en Netflix "); // BORRAR
                 response = gson.toJson(TMDBApi.fetchMovies("8"));
-            } else if (path.equals("/api/movies/disneyplus")) {
-                System.out.println("Buscando películas en Disney "); // BORRAR
-                response = gson.toJson(TMDBApi.fetchMovies("337"));
-            }  else if (path.equals("/api/movies/max")) {
-                System.out.println("Buscando películas en Max "); // BORRAR
-                response = gson.toJson(TMDBApi.fetchMovies("1899"));
-            }  else if (path.equals("/api/movies/allTheaterMovies")){
+            } else if (path.equals("/api/movies/allTheaterMovies")){
                 response = gson.toJson(moviesDataApi.getAllMoviesList());
             }  else {
                 response = gson.toJson("Ruta no encontrada");

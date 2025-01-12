@@ -10,7 +10,7 @@ public class MoviesDataApi {
     private List<Cinema> cinemas = new ArrayList<>();  // Lista de cines
     private final String driver = "/Users/javigba/Desktop/UNI2425/DAP/DapFlixFinal/chromedriver-mac-arm64/chromedriver";
     private List<Movie> yearRanking = new ArrayList<>();
-    private List<Movie> historicalRanking = new ArrayList<>();
+    private List<String[]> yearlyData = new ArrayList<>();
     Movie mostViewedMovie;
 
     public MoviesDataApi() {
@@ -29,7 +29,7 @@ public class MoviesDataApi {
         System.out.println("Ranking cargado");
         loadMostViewed();
         System.out.println("Mas vista cargada");
-        loadHistoricalRanking();
+        loadYearRevenueData();
     }
 
     // Método para cargar datos de Yelmo Cines
@@ -95,11 +95,19 @@ public class MoviesDataApi {
                 .collect(Collectors.toList());
     }
 
-    // Obtener el ranking de películas del año
-    void loadHistoricalRanking() {
+    public void loadYearRevenueData() {
         TaquillaESP taquillaESP = new TaquillaESP(driver, "https://www.taquillaespana.es/");
-        historicalRanking = taquillaESP.getHistoricalData();
+        List<String[]> yearlyData = taquillaESP.getYearRevenueData();
+
+        // Mostrar los resultados en consola
+        for (String[] data : yearlyData) {
+            System.out.println(data[0] + ": " + data[1]);
+        }
+        this.yearlyData = yearlyData;
     }
+
+
+
 
     public List<Movie> getYearRanking(){
         return yearRanking;
@@ -109,7 +117,7 @@ public class MoviesDataApi {
         return mostViewedMovie;
     }
 
-    public List<Movie> getHistoricalRanking(){
-        return historicalRanking;
+    public List<String[]> getYearRevenueData(){
+        return yearlyData;
     }
 }

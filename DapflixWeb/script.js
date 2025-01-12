@@ -166,42 +166,6 @@ function loadNetflixMovies() {
         .catch(error => console.error("Error al cargar películas de Netflix:", error));
 }
 
-function loadDisneyMovies() {
-    fetch('http://localhost:8080/api/movies/disneyplus')
-        .then(response => response.json())
-        .then(data => {
-            const streamingSection = document.getElementById("streamingMovies");
-            streamingSection.innerHTML = '';
-            document.getElementById("peliculas-streaming").textContent = data.length;
-
-            data.forEach(movie => {
-                const movieElement = document.createElement("div");
-                movieElement.classList.add("movie-item");
-                movieElement.innerHTML = `<img src="${movie.image}" alt="${movie.title}"><div class="movie-title">${movie.title}</div>`;
-                streamingSection.appendChild(movieElement);
-            });
-        })
-        .catch(error => console.error("Error al cargar películas de Disney+:", error));
-}
-
-function loadMaxMovies() {
-    fetch('http://localhost:8080/api/movies/max')
-        .then(response => response.json())
-        .then(data => {
-            const streamingSection = document.getElementById("streamingMovies");
-            streamingSection.innerHTML = '';
-            document.getElementById("peliculas-streaming").textContent = data.length;
-
-            data.forEach(movie => {
-                const movieElement = document.createElement("div");
-                movieElement.classList.add("movie-item");
-                movieElement.innerHTML = `<img src="${movie.image}" alt="${movie.title}"><div class="movie-title">${movie.title}</div>`;
-                streamingSection.appendChild(movieElement);
-            });
-        })
-        .catch(error => console.error("Error al cargar películas de Disney+:", error));
-}
-
 function loadRanking() {
     fetch('http://localhost:8080/api/dashboard/year-ranking')
         .then(response => {
@@ -282,7 +246,7 @@ function updateMostViewedMovie() {
             `;
         });
 }
-function loadHistoricalRanking() {
+/*function loadHistoricalRanking() {
     const ctx = document.getElementById("historicalPieChart").getContext("2d");
 
     fetch('http://localhost:8080/api/dashboard/historical-ranking')
@@ -345,17 +309,70 @@ function loadHistoricalRanking() {
         .catch(error => {
             console.error("Error al cargar el ranking histórico:", error);
         });
+}*/
+
+function loadYearRevenueChart() {
+    const ctx = document.getElementById("historicalPieChart").getContext("2d");
+
+    fetch('http://localhost:8080/api/dashboard/year-revenue')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error al obtener los datos anuales");
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (Array.isArray(data) && data.length > 0) {
+                const labels = data.map(item => item[0]);
+                const values = data.map(item => parseFloat(item[1].replace("M€", "").trim()));
+
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Recaudación 2025 (€)',
+                            data: values,
+                            backgroundColor: ['rgba(75, 192, 192, 0.6)', 'rgba(255, 99, 132, 0.6)'],
+                            borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.label || '';
+                                        const value = context.raw || 0;
+                                        return `${label}: ${value.toFixed(2)}M€`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                throw new Error("Datos inválidos recibidos del servidor.");
+            }
+        })
+        .catch(error => {
+            console.error("Error al cargar el gráfico de recaudación anual:", error);
+        });
 }
+
+
 
 window.onload = function() {
     updateMostViewedMovie();
     loadRanking();
     loadAllMovies();
-    loadHistoricalRanking(); // Cargar el gráfico de tartas
+    loadYearRevenueChart(); // Cargar el gráfico de tartas
 };
 
 document.getElementById("loadMoviesBtn").addEventListener("click", loadAllMovies);
 document.getElementById("netflixBtn").addEventListener("click", loadNetflixMovies);
-document.getElementById("disneyPlusBtn").addEventListener("click", loadDisneyMovies);
-document.getElementById("maxBtn").addEventListener("click", loadMaxMovies);
 activateTab('cine');

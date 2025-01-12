@@ -45,7 +45,7 @@
                 <canvas id="comparativaChart"></canvas>
             </div>
             <div class="chart" id="pieChartContainer">
-                <h3>Ranking Histórico de Recaudación</h3>
+                <h3>Recaudación 2025</h3>
                 <canvas id="historicalPieChart"></canvas>
             </div>
         </div>
@@ -66,7 +66,6 @@
                 </table>
             </div>
         </div>
-
 
         <!-- Botón único para cargar las películas -->
         <div>
@@ -89,8 +88,6 @@
 
         <div>
             <button id="netflixBtn">Ver Películas de Netflix</button>
-            <button id="disneyPlusBtn">Ver Películas de Disney+</button>
-            <button id="maxBtn">Ver Películas de Max</button>
         </div>
 
         <div class="movies-section" id="streamingMovies">
@@ -104,18 +101,8 @@
 </main>
 
 <footer>
-    Datos actualizados el: <span id="currentDate"></span>
+    Datos actualizados al: 14 de diciembre de 2024
 </footer>
-<script>
-    // Obtener la fecha actual
-    const today = new Date();
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    const formattedDate = today.toLocaleDateString('es-ES', options);
-
-    // Insertar la fecha en el elemento con id "currentDate"
-    document.getElementById('currentDate').textContent = formattedDate;
-</script>
-
 <script src="script.js"></script>
 </body>
 </html>
