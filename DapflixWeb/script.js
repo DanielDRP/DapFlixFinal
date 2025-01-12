@@ -433,6 +433,28 @@ function loadAllStreamingMovies() {
         loadingIndicator.style.display = 'none';
     });
 }
+// Función para realizar la solicitud a la API y actualizar el título de la película más vista
+function fetchMostViewedSpanishMovie() {
+    // Realizamos la solicitud a la API para obtener la película más vista
+    fetch('http://localhost:8080/api/dashboard/most-viewed-spanish')
+        .then(response => response.json()) // Convierte la respuesta en formato JSON
+        .then(data => {
+            // Extraemos el título de la película más vista desde la respuesta, si está disponible
+            const mostViewedMovieTitle = data.title;  // Asumiendo que la API devuelve un campo 'title'
+
+            // Actualizamos el título de la película más vista en el HTML
+            document.getElementById('titulo-pelicula').innerText = mostViewedMovieTitle;
+        })
+        .catch(error => {
+            // Si hay un error, mostramos un mensaje
+            console.error('Error al obtener la película más vista:', error);
+        });
+}
+
+// Llamamos a la función cuando la página esté cargada
+document.addEventListener('DOMContentLoaded', function() {
+    fetchMostViewedSpanishMovie();
+});
 
 window.onload = function() {
     updateMostViewedMovie();

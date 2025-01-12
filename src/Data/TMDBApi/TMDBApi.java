@@ -15,9 +15,20 @@ import java.util.List;
 
 public class TMDBApi {
 
-    private static final String API_KEY = "cede27d74412936334f128dcbce95713";  // Asegúrate de usar tu propia clave de API
+    private static TMDBApi instance;
+    private static final String API_KEY = "cede27d74412936334f128dcbce95713";
 
-    public static List<Movie> fetchMovies(String watchProviderCode) {
+    private TMDBApi() {}
+
+    public static TMDBApi getInstance() {
+        if (instance == null) {
+            instance = new TMDBApi();
+        }
+        return instance;
+    }
+
+
+    public List<Movie> fetchMovies(String watchProviderCode) {
         List<Movie> moviesList = new ArrayList<>();
         try {
             // Construir la URL de la API con el código del proveedor de streaming
@@ -71,7 +82,7 @@ public class TMDBApi {
         return moviesList;  // Retornar la lista de películas
     }
 
-    public static Message getTotalMovies(String watchProviderCode) {
+    public Message getTotalMovies(String watchProviderCode) {
         int totalMovies = 0;
         try {
             // Construir la URL de la API con el código del proveedor de streaming

@@ -3,47 +3,50 @@ package Data.WebScraping;
 import Model.Cinema;
 import Model.Movie;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class MoviesDataApi {
-    private List<Cinema> cinemas = new ArrayList<>();  // Lista de cines
+    private List<Cinema> cinemas = new ArrayList<>(); // Lista de cines
     private final String driver = "/Users/dani/Documents/Uni/DAP/Libraries/chromedriver-mac-x64/chromedriver";
     private List<Movie> yearRanking = new ArrayList<>();
     private List<String[]> yearlyData = new ArrayList<>();
-    Movie mostViewedMovie;
+    private Movie mostViewedMovie;
+    private Movie mostViewedMovieSpanish;
 
     public MoviesDataApi() {
         loadCineData();
     }
 
-    // Método para cargar los cines y sus películas
+    // Método principal para cargar datos de todos los cines
     private void loadCineData() {
-        loadYelmoCinesData("santa-cruz-tenerife/meridiano");
-        System.out.println("Yelmo meridiano cargado");
-        loadYelmoCinesData("santa-cruz-tenerife/la-villa-de-orotava");
-        System.out.println("Yelmo la villa cargado");
-        loadMTenerifeCinesData();
-        System.out.println("Multicines cargado");
+        loadCineDataByType("yelmo", "https://www.yelmocines.es/cartelera/", "santa-cruz-tenerife/meridiano");
+        System.out.println("Yelmo Meridiano cargado");
+
+        loadCineDataByType("yelmo", "https://www.yelmocines.es/cartelera/", "santa-cruz-tenerife/la-villa-de-orotava");
+        System.out.println("Yelmo La Villa cargado");
+
+        loadCineDataByType("multicinestenerife", "https://multicinestenerife.com/cartelera-tenerife/", "");
+        System.out.println("Multicines Tenerife cargado");
+
         loadYearRankingData();
         System.out.println("Ranking cargado");
+
         loadMostViewed();
-        System.out.println("Mas vista cargada");
+        System.out.println("Película más vista cargada");
+
         loadYearRevenueData();
+        loadSpanishMostViewed();
     }
 
-    // Método para cargar datos de Yelmo Cines
-    private void loadYelmoCinesData(String city) {
-        YelmoScraper yelmo = new YelmoScraper(driver, "https://www.yelmocines.es/cartelera/", city);
-        List<Movie> yelmoMovies = yelmo.getSchedule();
-        cinemas.add(new Cinema("Yelmo Cines-" + city, yelmoMovies));
-    }
-
-    // Método para cargar datos de Multicines Tenerife
-    private void loadMTenerifeCinesData() {
-        MTenerifeScraper mt = new MTenerifeScraper(driver, "https://multicinestenerife.com/cartelera-tenerife/");
-        List<Movie> mtMovies = mt.getSchedule();
-        cinemas.add(new Cinema("Multicines Tenerife", mtMovies));
+    // Método generalizado para cargar datos de cines usando la factoría
+    private void loadCineDataByType(String cinemaType, String baseUrl, String city) {
+        MovieScraper scraper = ScraperFactory.createScraper(driver, baseUrl, city, cinemaType);
+        List<Movie> movies = scraper.getSchedule();
+        cinemas.add(new Cinema(cinemaType + (city != null && !city.isEmpty() ? "-" + city : ""), movies));
+        System.out.println(movies.size() + " - " + cinemaType);
     }
 
     private void loadYearRankingData() {
@@ -54,6 +57,22 @@ public class MoviesDataApi {
     private void loadMostViewed(){
         TaquillaESP taquillaESP = new TaquillaESP(driver, "https://www.taquillaespana.es/");
         mostViewedMovie = taquillaESP.getFirstMovieTitle(); // Suponiendo que TaquillaESP devuelve una lista de Movie
+    }
+
+    public void loadYearRevenueData() {
+        TaquillaESP taquillaESP = new TaquillaESP(driver, "https://www.taquillaespana.es/");
+        List<String[]> yearlyData = taquillaESP.getYearRevenueData();
+
+        // Mostrar los resultados en consola
+        for (String[] data : yearlyData) {
+            System.out.println(data[0] + ": " + data[1]);
+        }
+        this.yearlyData = yearlyData;
+    }
+
+    public void loadSpanishMostViewed(){
+        TaquillaESP taquillaESP = new TaquillaESP(driver, "https://www.taquillaespana.es/");
+        this.mostViewedMovieSpanish = taquillaESP.getMostViewedSpanishMovie();
     }
 
     // Obtener el número total de películas únicas
@@ -95,29 +114,19 @@ public class MoviesDataApi {
                 .collect(Collectors.toList());
     }
 
-    public void loadYearRevenueData() {
-        TaquillaESP taquillaESP = new TaquillaESP(driver, "https://www.taquillaespana.es/");
-        List<String[]> yearlyData = taquillaESP.getYearRevenueData();
-
-        // Mostrar los resultados en consola
-        for (String[] data : yearlyData) {
-            System.out.println(data[0] + ": " + data[1]);
-        }
-        this.yearlyData = yearlyData;
+    public Movie getMostViewedMovieSpanish() {
+        return mostViewedMovieSpanish;
     }
 
-
-
-
-    public List<Movie> getYearRanking(){
+    public List<Movie> getYearRanking() {
         return yearRanking;
     }
 
-    public Movie getMostViewed(){
+    public Movie getMostViewed() {
         return mostViewedMovie;
     }
 
-    public List<String[]> getYearRevenueData(){
+    public List<String[]> getYearRevenueData() {
         return yearlyData;
     }
 }

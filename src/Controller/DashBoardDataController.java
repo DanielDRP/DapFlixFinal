@@ -36,7 +36,9 @@ public class DashBoardDataController implements HttpHandler {
                 response = gson.toJson(moviesDataApi.getYearRanking());
             } else if (path.equals("/api/dashboard/most-viewed")) {
                 response = gson.toJson(moviesDataApi.getMostViewed());
-            } else if (path.equals("/api/dashboard/year-revenue")) {
+            } else if (path.equals("/api/dashboard/most-viewed-spanish")) {
+                response = gson.toJson(moviesDataApi.getMostViewedMovieSpanish());
+            }else if (path.equals("/api/dashboard/year-revenue")) {
                 response = gson.toJson(moviesDataApi.getYearRevenueData());
             }else {
                 response = gson.toJson(new Message("Ruta no encontrada"));
