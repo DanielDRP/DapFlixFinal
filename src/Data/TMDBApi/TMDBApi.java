@@ -1,5 +1,6 @@
 package Data.TMDBApi;
 
+import Model.Message;
 import Model.Movie;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -68,5 +69,39 @@ public class TMDBApi {
         }
 
         return moviesList;  // Retornar la lista de películas
+    }
+
+    public static Message getTotalMovies(String watchProviderCode) {
+        int totalMovies = 0;
+        try {
+            // Construir la URL de la API con el código del proveedor de streaming
+            String apiUrl = "https://api.themoviedb.org/3/discover/movie?api_key=" + API_KEY + "&with_watch_providers=" + watchProviderCode + "&watch_region=ES";
+            HttpURLConnection connection = (HttpURLConnection) new URL(apiUrl).openConnection();
+            connection.setRequestMethod("GET");
+
+            // Leer la respuesta de la API
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            // Parsear el JSON de la respuesta usando Gson
+            Gson gson = new Gson();
+            JsonObject jsonResponse = gson.fromJson(response.toString(), JsonObject.class);
+
+            // Obtener el número total de resultados
+            if (jsonResponse.has("total_results")) {
+                totalMovies = jsonResponse.get("total_results").getAsInt();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new Message(totalMovies + "");  // Retornar el número total de películas
     }
 }

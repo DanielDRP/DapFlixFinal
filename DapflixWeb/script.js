@@ -400,7 +400,99 @@ function loadYearRevenueChart() {
         });
 }
 
+let platformsChart = null;
 
+function updatePlatformsChart(netflixCount, disneyCount, maxCount) {
+    const ctx = document.getElementById("platformsChart").getContext("2d");
+
+    if (platformsChart) {
+        platformsChart.data.datasets[0].data = [netflixCount, disneyCount, maxCount];
+        platformsChart.update();
+        return;
+    }
+
+    platformsChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Netflix', 'Disney+', 'Max'],
+            datasets: [{
+                label: 'Peliculas por plataforma',
+                data: [netflixCount, disneyCount, maxCount],
+                backgroundColor: ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(75, 192, 192, 0.6)'],
+                borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(75, 192, 192, 1)'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+}
+
+function fetchPlatformCounts() {
+    Promise.all([
+        fetch('http://localhost:8080/api/movies/count/netflix').then(response => response.json()),
+        fetch('http://localhost:8080/api/movies/count/disneyplus').then(response => response.json()),
+        fetch('http://localhost:8080/api/movies/count/max').then(response => response.json())
+    ])
+    .then(data => {
+        const netflixCount = data[0].content;
+        const disneyCount = data[1].content;
+        const maxCount = data[2].content;
+
+        // Llamar a la función para actualizar el gráfico con los datos obtenidos
+        updatePlatformsChart(netflixCount, disneyCount, maxCount);
+    })
+    .catch(error => console.error('Error al obtener los conteos de películas:', error));
+}
+
+// Llamar a la función cuando sea necesario, por ejemplo al cargar la página
+
+
+function loadAllStreamingMovies() {
+    fetchPlatformCounts();
+    const streamingSection = document.getElementById("streamingMovies");
+    const loadingIndicator = document.getElementById("loadingIndicator");
+
+    streamingSection.innerHTML = '';
+    loadingIndicator.style.display = 'block';
+
+    Promise.all([
+        fetch('http://localhost:8080/api/movies/netflix').then(res => res.json()),
+        fetch('http://localhost:8080/api/movies/disneyplus').then(res => res.json()),
+        fetch('http://localhost:8080/api/movies/max').then(res => res.json())
+    ])
+    .then(([netflixMovies, disneyMovies, maxMovies]) => {
+
+        const createPlatformSection = (platformName, movies) => {
+            const sectionTitle = document.createElement("h2");
+            sectionTitle.classList.add("platform-title");
+            sectionTitle.textContent = platformName;
+            streamingSection.appendChild(sectionTitle);
+
+            movies.forEach(movie => {
+                const movieElement = document.createElement("div");
+                movieElement.classList.add("movie-item");
+                movieElement.innerHTML = `<img src="${movie.image}" alt="${movie.title}"><div class="movie-title">${movie.title}</div>`;
+                streamingSection.appendChild(movieElement);
+            });
+        };
+
+        createPlatformSection("Netflix", netflixMovies);
+        createPlatformSection("Disney+", disneyMovies);
+        createPlatformSection("Max", maxMovies);
+
+        updatePlatformsChart(netflixCount, disneyCount, maxCount);
+    })
+    .catch(error => console.error("Error al cargar películas de plataformas:", error))
+    .finally(() => {
+        loadingIndicator.style.display = 'none';
+    });
+}
+
+document.getElementById("loadAllPlatformsBtn").addEventListener("click", loadAllStreamingMovies);
 
 window.onload = function() {
     updateMostViewedMovie();

@@ -32,21 +32,29 @@ public class MovieCatalogController implements HttpHandler {
                 response = gson.toJson(moviesDataApi.getMoviesByCinema("Yelmo Cines-santa-cruz-tenerife/meridiano"));
             } else if (path.equals("/api/movies/la-villa-de-orotava")) {
                 response = gson.toJson(moviesDataApi.getMoviesByCinema("Yelmo Cines-santa-cruz-tenerife/la-villa-de-orotava"));
-            }
-            else if (path.equals("/api/movies/multicines-tenerife")) {
+            } else if (path.equals("/api/movies/multicines-tenerife")) {
                 response = gson.toJson(moviesDataApi.getMoviesByCinema("Multicines Tenerife"));
             } else if (path.equals("/api/movies/netflix")) {
                 System.out.println("Buscando películas en Netflix "); // BORRAR
                 response = gson.toJson(TMDBApi.fetchMovies("8"));
-            }else if (path.equals("/api/movies/disneyplus")) {
+            } else if (path.equals("/api/movies/disneyplus")) {
                 System.out.println("Buscando películas en Disney "); // BORRAR
                 response = gson.toJson(TMDBApi.fetchMovies("337"));
-            }  else if (path.equals("/api/movies/max")) {
+            } else if (path.equals("/api/movies/max")) {
                 System.out.println("Buscando películas en Max "); // BORRAR
                 response = gson.toJson(TMDBApi.fetchMovies("1899"));
-            } else if (path.equals("/api/movies/allTheaterMovies")){
+            } else if (path.equals("/api/movies/allTheaterMovies")) {
                 response = gson.toJson(moviesDataApi.getAllMoviesList());
-            }  else {
+            } else if (path.equals("/api/movies/count/netflix")) {
+                System.out.println("Contando películas en Netflix");
+                response = gson.toJson(TMDBApi.getTotalMovies("8"));
+            } else if (path.equals("/api/movies/count/disneyplus")) {
+                System.out.println("Contando películas en Disney+");
+                response = gson.toJson(TMDBApi.getTotalMovies("337"));
+            } else if (path.equals("/api/movies/count/max")) {
+                System.out.println("Contando películas en Max");
+                response = gson.toJson(TMDBApi.getTotalMovies("1899"));
+            } else {
                 response = gson.toJson("Ruta no encontrada");
                 statusCode = 404;
             }

@@ -48,9 +48,6 @@
                 <h3>Recaudación 2025</h3>
                 <canvas id="historicalPieChart"></canvas>
             </div>
-        </div>
-
-        <div class="chart-container">
             <div class="ranking-table">
                 <h3>Ranking de Películas 2025</h3>
                 <table>
@@ -79,10 +76,15 @@
     </div>
 
     <div id="streaming" class="panel">
+        <button id="loadAllPlatformsBtn">Cargar catálogo completo</button>
         <div class="kpi-container">
             <div class="kpi">
                 <h2 id="peliculas-streaming">0</h2>
                 <p>Películas disponibles en Streaming</p>
+            </div>
+            <div class="chart" id="platformsChartContainer">
+                <h3>Plataformas de Streaming</h3>
+                <canvas id="platformsChart"></canvas>
             </div>
         </div>
 
