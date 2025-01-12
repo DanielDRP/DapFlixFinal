@@ -43,9 +43,4 @@ public class YelmoScraper extends BaseScraper implements MovieScraper{
 
         return movies;
     }
-
-    @Override
-    public int getSize() {
-        return 0;
-    }
 }

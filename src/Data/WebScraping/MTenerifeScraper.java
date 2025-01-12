@@ -44,9 +44,4 @@ public class MTenerifeScraper extends BaseScraper implements MovieScraper {
 
         return movies;
     }
-
-    @Override
-    public int getSize() {
-        return 0;
-    }
 }

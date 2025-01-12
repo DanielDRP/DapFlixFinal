@@ -6,5 +6,4 @@ import java.util.List;
 
 public interface MovieScraper {
     List<Movie> getSchedule();
-    int getSize();
 }

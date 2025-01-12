@@ -37,25 +37,25 @@ public class MovieCatalogController implements HttpHandler {
             } else if (path.equals("/api/movies/multicines-tenerife")) {
                 response = gson.toJson(moviesDataApi.getMoviesByCinema("multicinestenerife"));
             } else if (path.equals("/api/movies/netflix")) {
-                System.out.println("Buscando películas en Netflix "); // BORRAR
                 response = gson.toJson(tmdb.fetchMovies("8"));
             } else if (path.equals("/api/movies/disneyplus")) {
-                System.out.println("Buscando películas en Disney "); // BORRAR
                 response = gson.toJson(tmdb.fetchMovies("337"));
             } else if (path.equals("/api/movies/max")) {
-                System.out.println("Buscando películas en Max "); // BORRAR
                 response = gson.toJson(tmdb.fetchMovies("1899"));
             } else if (path.equals("/api/movies/allTheaterMovies")) {
                 response = gson.toJson(moviesDataApi.getAllMoviesList());
             } else if (path.equals("/api/movies/count/netflix")) {
-                System.out.println("Contando películas en Netflix");
                 response = gson.toJson(tmdb.getTotalMovies("8"));
             } else if (path.equals("/api/movies/count/disneyplus")) {
-                System.out.println("Contando películas en Disney+");
                 response = gson.toJson(tmdb.getTotalMovies("337"));
             } else if (path.equals("/api/movies/count/max")) {
-                System.out.println("Contando películas en Max");
                 response = gson.toJson(tmdb.getTotalMovies("1899"));
+            } else if (path.equals("/api/movies/count/netflixtv")) {
+                response = gson.toJson(tmdb.getTotalSeries("8"));
+            } else if (path.equals("/api/movies/count/disneytv")) {
+                response = gson.toJson(tmdb.getTotalSeries("337"));
+            }  else if (path.equals("/api/movies/count/maxtv")) {
+                response = gson.toJson(tmdb.getTotalSeries("1899"));
             } else {
                 response = gson.toJson("Ruta no encontrada");
                 statusCode = 404;
