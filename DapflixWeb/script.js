@@ -23,8 +23,14 @@ document.querySelectorAll('.tab').forEach(tab => {
     tab.addEventListener('click', () => {
         const tabName = tab.getAttribute('data-tab');
         activateTab(tabName);
+
+        // Llamar a loadAllStreamingMovies cuando la pestaña "streaming" sea seleccionada
+        if (tabName === "streaming") {
+            loadAllStreamingMovies();
+        }
     });
 });
+
 
 function updateComparativaChart() {
     const ctx = document.getElementById("comparativaChart").getContext("2d");
@@ -282,70 +288,6 @@ function updateMostViewedMovie() {
             `;
         });
 }
-/*function loadHistoricalRanking() {
-    const ctx = document.getElementById("historicalPieChart").getContext("2d");
-
-    fetch('http://localhost:8080/api/dashboard/historical-ranking')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Error al obtener los datos del ranking histórico");
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (Array.isArray(data)) {
-                const titles = data.map(movie => movie.title);
-                const revenues = data.map(movie => parseFloat(movie.info.replace(/,/g, '')));
-
-                new Chart(ctx, {
-                    type: 'pie',
-                    data: {
-                        labels: titles,
-                        datasets: [{
-                            label: 'Recaudación (€)',
-                            data: revenues,
-                            backgroundColor: [
-                                'rgba(75, 192, 192, 0.6)',
-                                'rgba(255, 99, 132, 0.6)',
-                                'rgba(153, 102, 255, 0.6)',
-                                'rgba(255, 205, 86, 0.6)',
-                                'rgba(54, 162, 235, 0.6)'
-                            ],
-                            borderColor: [
-                                'rgba(75, 192, 192, 1)',
-                                'rgba(255, 99, 132, 1)',
-                                'rgba(153, 102, 255, 1)',
-                                'rgba(255, 205, 86, 1)',
-                                'rgba(54, 162, 235, 1)'
-                            ],
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        plugins: {
-                            legend: {
-                                position: 'top',
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        const label = context.label || '';
-                                        const value = context.raw || 0;
-                                        return `${label}: €${value.toLocaleString()}`;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            } else {
-                throw new Error("Formato de datos inesperado: la respuesta no es un array.");
-            }
-        })
-        .catch(error => {
-            console.error("Error al cargar el ranking histórico:", error);
-        });
-}*/
 
 function loadYearRevenueChart() {
     const ctx = document.getElementById("historicalPieChart").getContext("2d");
@@ -491,8 +433,6 @@ function loadAllStreamingMovies() {
         loadingIndicator.style.display = 'none';
     });
 }
-
-document.getElementById("loadAllPlatformsBtn").addEventListener("click", loadAllStreamingMovies);
 
 window.onload = function() {
     updateMostViewedMovie();
