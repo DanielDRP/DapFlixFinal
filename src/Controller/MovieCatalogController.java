@@ -52,6 +52,7 @@ public class MovieCatalogController implements HttpHandler {
                 response = gson.toJson(tmdb.getTotalMovies("1899"));
             } else if (path.equals("/api/movies/count/netflixtv")) {
                 response = gson.toJson(tmdb.getTotalSeries("8"));
+                System.out.println(response);
             } else if (path.equals("/api/movies/count/disneytv")) {
                 response = gson.toJson(tmdb.getTotalSeries("337"));
             }  else if (path.equals("/api/movies/count/maxtv")) {

@@ -394,7 +394,7 @@ function fetchPlatformCounts() {
 
 
 function loadAllStreamingMovies() {
-    fetchPlatformCounts();
+    fetchPlatformCounts();  // Obtener los conteos y actualizar el gráfico de plataformas
     const streamingSection = document.getElementById("streamingMovies");
     const loadingIndicator = document.getElementById("loadingIndicator");
 
@@ -426,7 +426,7 @@ function loadAllStreamingMovies() {
         createPlatformSection("Disney+", disneyMovies);
         createPlatformSection("Max", maxMovies);
 
-        updatePlatformsChart(netflixCount, disneyCount, maxCount);
+        // Ya se ha actualizado el gráfico de plataformas en fetchPlatformCounts()
     })
     .catch(error => console.error("Error al cargar películas de plataformas:", error))
     .finally(() => {
@@ -461,7 +461,9 @@ window.onload = function() {
     loadRanking();
     loadAllMovies();
     loadYearRevenueChart(); // Cargar el gráfico de tartas
+    loadAllStreamingMovies();  // Cargar las películas y actualizar el gráfico de plataformas
 };
+
 
 document.getElementById("loadMoviesBtn").addEventListener("click", loadAllMovies);
 document.getElementById("netflixBtn").addEventListener("click", loadNetflixMovies);

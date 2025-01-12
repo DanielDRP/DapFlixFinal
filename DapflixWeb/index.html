@@ -80,6 +80,59 @@
                 <h3>Series en plataformas de Streaming</h3>
                 <canvas id="platformsChartTv"></canvas>
             </div>
+
+            <script>
+                // Esperar a que el DOM esté completamente cargado antes de ejecutar el script
+                document.addEventListener("DOMContentLoaded", () => {
+                    const ctxTv = document.getElementById('platformsChartTv').getContext('2d');
+
+                    // Obtener los datos de las series desde los endpoints
+                    Promise.all([
+                        fetch('http://localhost:8080/api/movies/count/netflixtv').then(res => res.json()),
+                        fetch('http://localhost:8080/api/movies/count/disneytv').then(res => res.json()),
+                        fetch('http://localhost:8080/api/movies/count/maxtv').then(res => res.json())
+                    ]).then(([netflixTv, disneyTv, maxTv]) => {
+                        // Crear el gráfico de series
+                        new Chart(ctxTv, {
+                            type: 'bar', // Tipo de gráfico
+                            data: {
+                                labels: ['Netflix TV', 'Disney+ TV', 'Max TV'], // Etiquetas para cada plataforma
+                                datasets: [{
+                                    label: 'Número de Series',
+                                    data: [netflixTv, disneyTv, maxTv], // Datos de las series
+                                    backgroundColor: [
+                                        'rgba(255, 99, 132, 0.2)', // Color para Netflix
+                                        'rgba(54, 162, 235, 0.2)', // Color para Disney+
+                                        'rgba(75, 192, 192, 0.2)'  // Color para Max
+                                    ],
+                                    borderColor: [
+                                        'rgba(255, 99, 132, 1)',
+                                        'rgba(54, 162, 235, 1)',
+                                        'rgba(75, 192, 192, 1)'
+                                    ],
+                                    borderWidth: 1 // Grosor del borde de las barras
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                plugins: {
+                                    legend: {
+                                        display: true,
+                                        position: 'top',
+                                    }
+                                },
+                                scales: {
+                                    y: {
+                                        beginAtZero: true // Iniciar el eje Y en cero
+                                    }
+                                }
+                            }
+                        });
+                    }).catch(err => {
+                        console.error("Error al obtener datos para la gráfica de TV:", err);
+                    });
+                });
+            </script>
             <div class="chart" id="platformsChartContainer">
                 <h3>Plataformas de Streaming</h3>
                 <canvas id="platformsChart"></canvas>
