@@ -163,7 +163,6 @@ function loadNetflixMovies() {
         .then(data => {
             const streamingSection = document.getElementById("streamingMovies");
             streamingSection.innerHTML = '';
-            document.getElementById("peliculas-streaming").textContent = data.length;
 
             data.forEach(movie => {
                 const movieElement = document.createElement("div");
@@ -181,7 +180,6 @@ function loadDisneyMovies() {
         .then(data => {
             const streamingSection = document.getElementById("streamingMovies");
             streamingSection.innerHTML = '';
-            document.getElementById("peliculas-streaming").textContent = data.length;
 
             data.forEach(movie => {
                 const movieElement = document.createElement("div");
@@ -199,7 +197,6 @@ function loadMaxMovies() {
         .then(data => {
             const streamingSection = document.getElementById("streamingMovies");
             streamingSection.innerHTML = '';
-            document.getElementById("peliculas-streaming").textContent = data.length;
 
             data.forEach(movie => {
                 const movieElement = document.createElement("div");
