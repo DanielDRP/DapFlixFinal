@@ -254,6 +254,32 @@ footer {
     100% { transform: rotate(360deg); }
 }
 
+/* Contenedor de los botones */
+#streamingButtons {
+    display: flex;
+    justify-content: center;  /* Centra los botones horizontalmente */
+    align-items: center;      /* Centra los botones verticalmente */
+    gap: 20px;                /* Espacio entre los botones */
+    margin-top: 20px;         /* Espacio superior (opcional) */
+}
+
+/* Estilo de los botones */
+#streamingButtons button {
+    padding: 10px 20px;       /* Tamaño de los botones */
+    font-size: 16px;          /* Tamaño de la fuente */
+    cursor: pointer;         /* Cambia el cursor al pasar por encima */
+    background-color: black;  /* Color de fondo negro */
+    color: white;             /* Color del texto blanco */
+    border: none;             /* Sin borde */
+    border-radius: 5px;       /* Bordes redondeados */
+    transition: background-color 0.3s ease; /* Transición suave al pasar el mouse */
+}
+
+/* Cambio de color al pasar el mouse */
+#streamingButtons button:hover {
+    background-color: #444;  /* Color de fondo gris oscuro al pasar el cursor */
+}
+
 /* Ajuste de layout para pantallas pequeñas */
 @media (max-width: 768px) {
     .tab-container {
