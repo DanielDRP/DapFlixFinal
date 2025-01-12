@@ -24,12 +24,15 @@ document.querySelectorAll('.tab').forEach(tab => {
         const tabName = tab.getAttribute('data-tab');
         activateTab(tabName);
 
-        // Llamar a loadAllStreamingMovies cuando la pestaña "streaming" sea seleccionada
+        // Llamar a loadAllStreamingMovies y loadPlatformsChartTv cuando la pestaña "streaming" sea seleccionada
         if (tabName === "streaming") {
             loadAllStreamingMovies();
+            loadPlatformsChartTv();
+            loadPlatformsChartTvMock();
         }
     });
 });
+
 
 
 function updateComparativaChart() {
@@ -450,6 +453,120 @@ function fetchMostViewedSpanishMovie() {
             console.error('Error al obtener la película más vista:', error);
         });
 }
+
+function loadPlatformsChartTv() {
+    const ctxTv = document.getElementById('platformsChartTv').getContext('2d');
+    console.log("Inicializando la carga de datos para la gráfica de TV...");
+
+    Promise.all([
+        fetch('http://localhost:8080/api/movies/count/netflixtv').then(res => res.json()),
+        fetch('http://localhost:8080/api/movies/count/disneytv').then(res => res.json()),
+        fetch('http://localhost:8080/api/movies/count/maxtv').then(res => res.json())
+    ])
+        .then(([netflixTv, disneyTv, maxTv]) => {
+            console.log("Datos obtenidos de las APIs:", netflixTv, disneyTv, maxTv);
+
+            // Validar que los datos están disponibles
+            const netflixCount = parseInt(netflixTv.content || 0, 10);
+            const disneyCount = parseInt(disneyTv.content || 0, 10);
+            const maxCount = parseInt(maxTv.content || 0, 10);
+            console.log("Datos procesados:", { netflixCount, disneyCount, maxCount });
+
+            // Crear o actualizar el gráfico
+            if (platformsChart) {
+                platformsChart.data.datasets[0].data = [netflixCount, disneyCount, maxCount];
+                platformsChart.update();
+            } else {
+                platformsChart = new Chart(ctxTv, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Netflix TV', 'Disney+ TV', 'Max TV'],
+                        datasets: [{
+                            label: 'Número de Series',
+                            data: [netflixCount, disneyCount, maxCount],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.6)',
+                                'rgba(54, 162, 235, 0.6)',
+                                'rgba(75, 192, 192, 0.6)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(75, 192, 192, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+        })
+        .catch(err => {
+            console.error("Error al obtener datos para la gráfica de TV:", err);
+        });
+}
+
+
+function loadPlatformsChartTvMock() {
+    const ctxTv = document.getElementById('platformsChartTv').getContext('2d');
+
+    const netflixCount = 10;
+    const disneyCount = 5;
+    const maxCount = 8;
+
+    platformsChart = new Chart(ctxTv, {
+        type: 'bar',
+        data: {
+            labels: ['Netflix TV', 'Disney+ TV', 'Max TV'],
+            datasets: [{
+                label: 'Número de Series',
+                data: [netflixCount, disneyCount, maxCount],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(75, 192, 192, 0.6)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(75, 192, 192, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+
+
+
 
 // Llamamos a la función cuando la página esté cargada
 document.addEventListener('DOMContentLoaded', function() {
