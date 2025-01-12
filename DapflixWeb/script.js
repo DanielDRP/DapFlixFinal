@@ -166,6 +166,42 @@ function loadNetflixMovies() {
         .catch(error => console.error("Error al cargar películas de Netflix:", error));
 }
 
+function loadDisneyMovies() {
+    fetch('http://localhost:8080/api/movies/disneyplus')
+        .then(response => response.json())
+        .then(data => {
+            const streamingSection = document.getElementById("streamingMovies");
+            streamingSection.innerHTML = '';
+            document.getElementById("peliculas-streaming").textContent = data.length;
+
+            data.forEach(movie => {
+                const movieElement = document.createElement("div");
+                movieElement.classList.add("movie-item");
+                movieElement.innerHTML = `<img src="${movie.image}" alt="${movie.title}"><div class="movie-title">${movie.title}</div>`;
+                streamingSection.appendChild(movieElement);
+            });
+        })
+        .catch(error => console.error("Error al cargar películas de Disney:", error));
+}
+
+function loadMaxMovies() {
+    fetch('http://localhost:8080/api/movies/max')
+        .then(response => response.json())
+        .then(data => {
+            const streamingSection = document.getElementById("streamingMovies");
+            streamingSection.innerHTML = '';
+            document.getElementById("peliculas-streaming").textContent = data.length;
+
+            data.forEach(movie => {
+                const movieElement = document.createElement("div");
+                movieElement.classList.add("movie-item");
+                movieElement.innerHTML = `<img src="${movie.image}" alt="${movie.title}"><div class="movie-title">${movie.title}</div>`;
+                streamingSection.appendChild(movieElement);
+            });
+        })
+        .catch(error => console.error("Error al cargar películas de Max:", error));
+}
+
 function loadRanking() {
     fetch('http://localhost:8080/api/dashboard/year-ranking')
         .then(response => {
@@ -375,4 +411,6 @@ window.onload = function() {
 
 document.getElementById("loadMoviesBtn").addEventListener("click", loadAllMovies);
 document.getElementById("netflixBtn").addEventListener("click", loadNetflixMovies);
+document.getElementById("disneyPlusBtn").addEventListener("click", loadDisneyMovies);
+document.getElementById("maxBtn").addEventListener("click", loadMaxMovies);
 activateTab('cine');

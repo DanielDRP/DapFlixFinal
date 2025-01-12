@@ -88,6 +88,8 @@
 
         <div>
             <button id="netflixBtn">Ver Películas de Netflix</button>
+            <button id="disneyPlusBtn">Ver Películas de Disney+</button>
+            <button id="maxBtn">Ver Películas de Max</button>
         </div>
 
         <div class="movies-section" id="streamingMovies">
@@ -101,8 +103,18 @@
 </main>
 
 <footer>
-    Datos actualizados al: 14 de diciembre de 2024
+    Datos actualizados el: <span id="currentDate"></span>
 </footer>
+<script>
+    // Obtener la fecha actual
+    const today = new Date();
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const formattedDate = today.toLocaleDateString('es-ES', options);
+
+    // Insertar la fecha en el elemento con id "currentDate"
+    document.getElementById('currentDate').textContent = formattedDate;
+</script>
+
 <script src="script.js"></script>
 </body>
 </html>
