@@ -19,7 +19,7 @@ public class Server {
         server.createContext("/api/dashboard", new DashBoardDataController(mv));
 
         server.setExecutor(null);
-        System.out.println("Servidor iniciado en: http://localhost;:8080");
+        System.out.println("Servidor iniciado en: http://localhost::8080");
         server.start();
     }
 }

@@ -80,7 +80,7 @@ public class TaquillaESP extends BaseScraper {
             driver.quit();  // Cerramos el driver después de obtener el dato
         }
 
-        System.out.println(firstMovieTitle);  // Mostrar el título en la consola para verificación
+        // System.out.println(firstMovieTitle);  // Mostrar el título en la consola para verificación
         return new Movie(firstMovieTitle, "", "");
     }
 
@@ -146,7 +146,7 @@ public class TaquillaESP extends BaseScraper {
             driver.quit();  // Cerramos el driver después de obtener el dato
         }
 
-        System.out.println(firstMovieTitle);  // Mostrar el título en la consola para verificación
+        // System.out.println(firstMovieTitle);  // Mostrar el título en la consola para verificación
         return new Movie(firstMovieTitle, "", "");
     }
 

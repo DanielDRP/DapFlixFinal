@@ -27,11 +27,11 @@ public class DashBoardDataController implements HttpHandler {
 
         if ("GET".equals(exchange.getRequestMethod())) {
             String path = exchange.getRequestURI().getPath();
-            System.out.println("Petición recibida: " + path);
+            // System.out.println("Petición recibida: " + path);
 
             if (path.equals("/api/dashboard/moviescount")) {
                 int movieCount = moviesDataApi.getMoviesCount();
-                System.out.println(movieCount);
+                // System.out.println(movieCount);
                 response = ResponseView.render(new Message(String.valueOf(movieCount)));
                 //response = gson.toJson(new Message(String.valueOf(movieCount)));
             } else if (path.equals("/api/dashboard/year-ranking")) {

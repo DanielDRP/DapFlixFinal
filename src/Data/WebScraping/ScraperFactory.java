@@ -9,7 +9,7 @@ public class ScraperFactory {
             case "multicinestenerife":
                 return new MTenerifeScraper(driverPath,baseUrl);
             default:
-                throw new IllegalArgumentException("Unknown cinema type: " + cinemaType);
+                throw new IllegalArgumentException("Tipo de cine desconocido: " + cinemaType);
         }
     }
 }

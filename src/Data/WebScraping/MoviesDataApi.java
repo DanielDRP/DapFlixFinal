@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class MoviesDataApi {
     private List<Cinema> cinemas = new ArrayList<>(); // Lista de cines
-    private final String driver = "/Users/dani/Documents/Uni/DAP/Libraries/chromedriver-mac-x64/chromedriver";
+    private final String driver = "C:\\Users\\afermarx\\Downloads\\131.0.6778.69 chromedriver-win64\\chromedriver-win64\\chromedriver.exe";
     private List<Movie> yearRanking = new ArrayList<>();
     private List<String[]> yearlyData = new ArrayList<>();
     private Movie mostViewedMovie;
@@ -32,10 +32,10 @@ public class MoviesDataApi {
         System.out.println("Multicines Tenerife cargado");
 
         loadYearRankingData();
-        System.out.println("Ranking cargado");
+        // System.out.println("Ranking cargado");
 
         loadMostViewed();
-        System.out.println("Película más vista cargada");
+        // System.out.println("Película más vista cargada");
 
         loadYearRevenueData();
         loadSpanishMostViewed();
@@ -46,7 +46,7 @@ public class MoviesDataApi {
         MovieScraper scraper = ScraperFactory.createScraper(driver, baseUrl, city, cinemaType);
         List<Movie> movies = scraper.getSchedule();
         cinemas.add(new Cinema(cinemaType + (city != null && !city.isEmpty() ? "-" + city : ""), movies));
-        System.out.println(movies.size() + " - " + cinemaType);
+        // System.out.println(movies.size() + " - " + cinemaType);
     }
 
     private void loadYearRankingData() {
@@ -64,9 +64,9 @@ public class MoviesDataApi {
         List<String[]> yearlyData = taquillaESP.getYearRevenueData();
 
         // Mostrar los resultados en consola
-        for (String[] data : yearlyData) {
-            System.out.println(data[0] + ": " + data[1]);
-        }
+        // for (String[] data : yearlyData) {
+        //     System.out.println(data[0] + ": " + data[1]);
+        // }
         this.yearlyData = yearlyData;
     }
 
