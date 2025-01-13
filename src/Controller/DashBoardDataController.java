@@ -2,6 +2,7 @@ package Controller;
 
 import Data.WebScraping.MoviesDataApi;
 import Model.Message;
+import View.ResponseView;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -31,17 +32,22 @@ public class DashBoardDataController implements HttpHandler {
             if (path.equals("/api/dashboard/moviescount")) {
                 int movieCount = moviesDataApi.getMoviesCount();
                 System.out.println(movieCount);
-                response = gson.toJson(new Message(String.valueOf(movieCount)));
+                response = ResponseView.render(new Message(String.valueOf(movieCount)));
+                //response = gson.toJson(new Message(String.valueOf(movieCount)));
             } else if (path.equals("/api/dashboard/year-ranking")) {
-                response = gson.toJson(moviesDataApi.getYearRanking());
+                response = ResponseView.render(moviesDataApi.getYearRanking());
+                //response = gson.toJson(moviesDataApi.getYearRanking());
             } else if (path.equals("/api/dashboard/most-viewed")) {
-                response = gson.toJson(moviesDataApi.getMostViewed());
+                response = ResponseView.render(moviesDataApi.getMostViewed());
+                //response = gson.toJson(moviesDataApi.getMostViewed());
             } else if (path.equals("/api/dashboard/most-viewed-spanish")) {
-                response = gson.toJson(moviesDataApi.getMostViewedMovieSpanish());
+                response = ResponseView.render(moviesDataApi.getMostViewedMovieSpanish());
+                //response = gson.toJson(moviesDataApi.getMostViewedMovieSpanish());
             }else if (path.equals("/api/dashboard/year-revenue")) {
                 response = gson.toJson(moviesDataApi.getYearRevenueData());
             }else {
-                response = gson.toJson(new Message("Ruta no encontrada"));
+                response = ResponseView.render(new Message("Ruta no encontrada"));
+                //response = gson.toJson(new Message("Ruta no encontrada"));
                 statusCode = 404;
             }
 

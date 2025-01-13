@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class MoviesDataApi {
     private List<Cinema> cinemas = new ArrayList<>(); // Lista de cines
-    private final String driver = "/Users/javigba/Desktop/UNI2425/DAP/DapFlixFinal2/resources/chromedriver-mac-arm64/chromedriver";
+    private final String driver = "/Users/dani/Documents/Uni/DAP/Libraries/chromedriver-mac-x64/chromedriver";
     private List<Movie> yearRanking = new ArrayList<>();
     private List<String[]> yearlyData = new ArrayList<>();
     private Movie mostViewedMovie;

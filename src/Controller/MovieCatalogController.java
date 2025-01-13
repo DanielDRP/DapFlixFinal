@@ -2,6 +2,7 @@ package Controller;
 
 import Data.WebScraping.MoviesDataApi;
 import Data.TMDBApi.TMDBApi;
+import View.ResponseView;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -31,32 +32,45 @@ public class MovieCatalogController implements HttpHandler {
             System.out.println("Petición recibida: " + path);
 
             if (path.equals("/api/movies/yelmo-meridiano")) {
-                response = gson.toJson(moviesDataApi.getMoviesByCinema("yelmo-santa-cruz-tenerife/meridiano"));
+                response = ResponseView.render(moviesDataApi.getMoviesByCinema("yelmo-santa-cruz-tenerife/meridiano"));
+                //response = gson.toJson(moviesDataApi.getMoviesByCinema("yelmo-santa-cruz-tenerife/meridiano"));
             } else if (path.equals("/api/movies/la-villa-de-orotava")) {
-                response = gson.toJson(moviesDataApi.getMoviesByCinema("yelmo-santa-cruz-tenerife/la-villa-de-orotava"));
+                response = ResponseView.render(moviesDataApi.getMoviesByCinema("yelmo-santa-cruz-tenerife/la-villa-de-orotava"));
+                //response = gson.toJson(moviesDataApi.getMoviesByCinema("yelmo-santa-cruz-tenerife/la-villa-de-orotava"));
             } else if (path.equals("/api/movies/multicines-tenerife")) {
-                response = gson.toJson(moviesDataApi.getMoviesByCinema("multicinestenerife"));
+                response = ResponseView.render(moviesDataApi.getMoviesByCinema("multicinestenerife"));
+                //response = gson.toJson(moviesDataApi.getMoviesByCinema("multicinestenerife"));
             } else if (path.equals("/api/movies/netflix")) {
-                response = gson.toJson(tmdb.fetchMovies("8"));
+                response = ResponseView.render(tmdb.fetchMovies("8"));
+                //response = gson.toJson(tmdb.fetchMovies("8"));
             } else if (path.equals("/api/movies/disneyplus")) {
-                response = gson.toJson(tmdb.fetchMovies("337"));
+                response = ResponseView.render(tmdb.fetchMovies("337"));
+                //response = gson.toJson(tmdb.fetchMovies("337"));
             } else if (path.equals("/api/movies/max")) {
-                response = gson.toJson(tmdb.fetchMovies("1899"));
+                response = ResponseView.render(tmdb.fetchMovies("1899"));
+                //response = gson.toJson(tmdb.fetchMovies("1899"));
             } else if (path.equals("/api/movies/allTheaterMovies")) {
-                response = gson.toJson(moviesDataApi.getAllMoviesList());
+                response = ResponseView.render(moviesDataApi.getAllMoviesList());
+                //response = gson.toJson(moviesDataApi.getAllMoviesList());
             } else if (path.equals("/api/movies/count/netflix")) {
-                response = gson.toJson(tmdb.getTotalMovies("8"));
+                response = ResponseView.render(tmdb.getTotalMovies("8"));
+                //response = gson.toJson(tmdb.getTotalMovies("8"));
             } else if (path.equals("/api/movies/count/disneyplus")) {
-                response = gson.toJson(tmdb.getTotalMovies("337"));
+                response = ResponseView.render(tmdb.getTotalMovies("337"));
+                //response = gson.toJson(tmdb.getTotalMovies("337"));
             } else if (path.equals("/api/movies/count/max")) {
-                response = gson.toJson(tmdb.getTotalMovies("1899"));
+                response = ResponseView.render(tmdb.getTotalMovies("1899"));
+                //response = gson.toJson(tmdb.getTotalMovies("1899"));
             } else if (path.equals("/api/movies/count/netflixtv")) {
-                response = gson.toJson(tmdb.getTotalSeries("8"));
+                response = ResponseView.render(tmdb.getTotalSeries("8"));
+                //response = gson.toJson(tmdb.getTotalSeries("8"));
                 System.out.println(response);
             } else if (path.equals("/api/movies/count/disneytv")) {
-                response = gson.toJson(tmdb.getTotalSeries("337"));
+                response = ResponseView.render(tmdb.getTotalSeries("337"));
+                //response = gson.toJson(tmdb.getTotalSeries("337"));
             }  else if (path.equals("/api/movies/count/maxtv")) {
-                response = gson.toJson(tmdb.getTotalSeries("1899"));
+                response = ResponseView.render(tmdb.getTotalSeries("1899"));
+                //response = gson.toJson(tmdb.getTotalSeries("1899"));
             } else {
                 response = gson.toJson("Ruta no encontrada");
                 statusCode = 404;
